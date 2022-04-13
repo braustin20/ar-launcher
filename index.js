@@ -36,6 +36,7 @@ $(document).ready(function () {
 
     const usdzUrl = file_url + "#allowsContentScaling=0";
     anchor.setAttribute("href", usdzUrl);
+    console.log("Launching iOS QuickLook: " + usdzUrl);
     anchor.click();
   }
 
@@ -92,7 +93,7 @@ $(document).ready(function () {
     };
 
     document.addEventListener("hashchange", handleFallback, { once: true });
-    console.log("Launching: " + intent);
+    console.log("Launching Android Intent: " + intent);
     anchor.setAttribute("href", intent);
     anchor.click();
   }
