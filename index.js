@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  var file_url = getUrlVars()["file"];
   launchAR();
   $("#launch-button").on("click", function (ev) {
     launchAR();
@@ -32,7 +31,7 @@ $(document).ready(function () {
   }
 
   function openIOSARQuickLook() {
-    const file_url = getUrlVars()["file"];
+    const file_url = getUrlVars()["usdz"];
     const anchor = document.createElement("a");
     anchor.setAttribute("rel", "ar");
     anchor.appendChild(document.createElement("img"));
@@ -44,7 +43,7 @@ $(document).ready(function () {
   }
 
   function createAndroidIntent() {
-    const file_url = getUrlVars()["file"];
+    const file_url = getUrlVars()["gltf"];
     // This is necessary because the original URL might have query
     // parameters. Since we're appending the whole URL as query parameter,
     // ? needs to be turned into & to not lose any of them.
