@@ -1,6 +1,9 @@
 $(document).ready(function () {
   var file_url = getUrlVars()["file"];
   launchAR();
+  $("#launch-button").on("click", function (ev) {
+    launchAR();
+  });
 
   // Get the URL & Params, Break them Down
   function getUrlVars() {
