@@ -1,32 +1,34 @@
-$( document ).ready(function() {
+$(document).ready(function () {
   var file_url = getUrlVars()["file"];
   launchAR();
-  
+
   // Get the URL & Params, Break them Down
   function getUrlVars() {
-      var vars = {};
-      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
-      function(m,key,value) {
+    var vars = {};
+    var parts = window.location.href.replace(
+      /[?&]+([^=&]+)=([^&]*)/gi,
+      function (m, key, value) {
         vars[key] = value;
-      });
-      return vars;
-   }
+      }
+    );
+    return vars;
+  }
   function isIOS() {
     return (
       (/iPad|iPhone|iPod/.test(navigator.userAgent) && !self.MSStream) ||
       (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
     );
   }
-  
+
   function launchAR() {
     if (isIOS()) {
       openIOSARQuickLook();
     } else {
       openSceneViewer();
     }
-	}
+  }
 
-	function openIOSARQuickLook() {
+  function openIOSARQuickLook() {
     const file_url = getUrlVars()["file"];
     const anchor = document.createElement("a");
     anchor.setAttribute("rel", "ar");
@@ -35,7 +37,7 @@ $( document ).ready(function() {
     const usdzUrl = file_url + "#allowsContentScaling=0";
     anchor.setAttribute("href", usdzUrl);
     anchor.click();
-	}
+  }
 
   function createAndroidIntent() {
     const file_url = getUrlVars()["file"];
@@ -60,39 +62,38 @@ $( document ).ready(function() {
     intentParams += `&resizable=false`;
 
     const intent = `intent://arvr.google.com/scene-viewer/1.0${intentParams}#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(
-      locationUrl.toString(),
+      locationUrl.toString()
     )};end;`;
 
     return intent;
   }
-  
+
   function openSceneViewer(customIntent = "") {
-			const anchor = document.createElement("a");
-			const noArViewerSigil = "#model-viewer-no-ar-fallback";
-			let fallbackInvoked = false;
+    const anchor = document.createElement("a");
+    const noArViewerSigil = "#model-viewer-no-ar-fallback";
+    let fallbackInvoked = false;
 
-			if (fallbackInvoked) {
-				return;
-			}
+    if (fallbackInvoked) {
+      return;
+    }
 
-			const intent = createAndroidIntent();
+    const intent = createAndroidIntent();
 
-			const handleFallback = () => {
-				if (self.location.hash === noArViewerSigil && !fallbackInvoked) {
-					fallbackInvoked = true;
-					// The new history will be the current URL with a new hash.
-					// Go back one step so that we reset to the expected URL.
-					// NOTE(cdata): this should not invoke any browser-level navigation
-					// because hash-only changes modify the URL in-place without
-					// navigating:
-					self.history.back();
-				}
-			};
+    const handleFallback = () => {
+      if (self.location.hash === noArViewerSigil && !fallbackInvoked) {
+        fallbackInvoked = true;
+        // The new history will be the current URL with a new hash.
+        // Go back one step so that we reset to the expected URL.
+        // NOTE(cdata): this should not invoke any browser-level navigation
+        // because hash-only changes modify the URL in-place without
+        // navigating:
+        self.history.back();
+      }
+    };
 
-	    document.addEventListener("hashchange", handleFallback, { once: true });
-      console.log("Launching: " + intent);
-			anchor.setAttribute("href", intent);
-			// anchor.click();
-      document.appendChild(anchor);
-		}
+    document.addEventListener("hashchange", handleFallback, { once: true });
+    console.log("Launching: " + intent);
+    anchor.setAttribute("href", intent);
+    anchor.click();
+  }
 });
