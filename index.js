@@ -47,7 +47,7 @@ $(document).ready(function () {
     const gltfSrc = file_url;
     const location = self.location.toString();
     const locationUrl = new URL(location);
-    const cleanUrl = new URL(encodeURIComponent(gltfSrc || ""), location);
+    const cleanUrl = new URL(gltfSrc, location);
 
     // modelUrl can contain title/link/sound etc.
     // These are already URL-encoded, so we shouldn't do that again here.
